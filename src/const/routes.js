@@ -1,0 +1,11 @@
+export const ROOT_ROUTE = "/"
+export const HOME_ROUTE = "/home"
+export const HOME_BY_PAGE_ROUTE = "/home/:page"
+export const SEARCH_ROUTE = ["/search", "/search/:title"];
+export const DETAILS_BY_DID_ROUTE = "/details/:did";
+export const LOGIN_ROUTE = "/login";
+export const PROFILE_ROUTE = "/profile";
+export const PROFILE_BY_UID_ROUTE = "/profile/:uid";
+export const DISCUSSIONS_ROUTE = "/discussions";
+export const PLAYLISTS_ROUTE = "/playlists";
+export const PLAYLISTS_BY_UID_ROUTE = "/playlists/:uid";
