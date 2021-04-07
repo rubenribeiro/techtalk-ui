@@ -56,18 +56,6 @@ const App = () => {
                 </Box>
             </Container>
             <Footer />
-
-
-          {/*<Switch>*/}
-          {/*    <Route exact path="/" render={() => <Redirect to="/home/1" />} />*/}
-          {/*    <Route path="/home" component={Home} />*/}
-          {/*    <Route path="/home/:page" component={Home} />*/}
-          {/*    <Route path="/search" component={Search} />*/}
-          {/*    <Route path="/login" component={Home} />*/}
-          {/*    <Route path="/profile" component={Home} />*/}
-          {/*    <Route path="/details" component={Home} />*/}
-          {/*</Switch>*/}
-
         </BrowserRouter>
       </ThemeProvider>
   );
