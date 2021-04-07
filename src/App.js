@@ -7,22 +7,30 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import theme from './components/Theme';
 import AppBar from './components/AppBar';
+import Footer from './components/Footer';
 import Home from './components/Screens/Home';
 import Discussions from "./components/Screens/Discussions";
 import Search from "./components/Screens/Search";
+import Details from "./components/Screens/Details";
 import {
     ROOT_ROUTE,
     HOME_ROUTE,
     HOME_BY_PAGE_ROUTE,
     DISCUSSIONS_ROUTE,
-    SEARCH_ROUTE
+    SEARCH_ROUTE,
+    SEARCH_BY_TITLE,
+    DETAILS_BY_DID_ROUTE
 } from './const/routes';
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        height: '100vh',
+    },
     appContainer: {
         backgroundColor: '#eef0f1',
-        height: '100vh',
+        minHeight: '100vh',
         marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(2)
     },
 }));
 
@@ -42,10 +50,13 @@ const App = () => {
                         <Route path={HOME_ROUTE} component={Home} />
                         <Route path={HOME_BY_PAGE_ROUTE} component={Home} />
                         <Route path={DISCUSSIONS_ROUTE} component={Discussions} />
-                        <Route path={SEARCH_ROUTE} component={Search} />
+                        <Route exact path={[SEARCH_BY_TITLE, SEARCH_ROUTE]} component={Search} />
+                        <Route path={DETAILS_BY_DID_ROUTE} component={Details} />
                     </Switch>
                 </Box>
             </Container>
+            <Footer />
+
 
           {/*<Switch>*/}
           {/*    <Route exact path="/" render={() => <Redirect to="/home/1" />} />*/}
@@ -56,6 +67,7 @@ const App = () => {
           {/*    <Route path="/profile" component={Home} />*/}
           {/*    <Route path="/details" component={Home} />*/}
           {/*</Switch>*/}
+
         </BrowserRouter>
       </ThemeProvider>
   );

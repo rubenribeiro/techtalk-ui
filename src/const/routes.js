@@ -1,7 +1,9 @@
-export const ROOT_ROUTE = "/"
-export const HOME_ROUTE = "/home"
-export const HOME_BY_PAGE_ROUTE = "/home/:page"
-export const SEARCH_ROUTE = ["/search", "/search/:title"];
+export const ROOT_ROUTE = "/";
+export const HOME_ROUTE = "/home";
+export const HOME_BY_PAGE_ROUTE = "/home/:page";
+export const SEARCH_ROUTE = "/search";
+export const SEARCH_BY_TITLE= "/search/:title";
+export const DETAILS_ROUTE = "/details";
 export const DETAILS_BY_DID_ROUTE = "/details/:did";
 export const LOGIN_ROUTE = "/login";
 export const PROFILE_ROUTE = "/profile";

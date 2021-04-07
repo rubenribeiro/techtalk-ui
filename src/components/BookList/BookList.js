@@ -20,9 +20,9 @@ const BookList = ({books}) => {
     return(
             <List>
                 {
-                    books && books.map((book) => {
+                    books && books.map((book, idx) => {
                         return (
-                            <BookListItem key={book.id} book={book} />
+                            <BookListItem key={book.id} book={book} lastItem={books.length === idx + 1 ? true : false} />
                         )
                     })
                 }

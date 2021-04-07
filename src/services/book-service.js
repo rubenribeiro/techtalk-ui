@@ -1,6 +1,5 @@
 const BOOKS_URL = 'https://www.googleapis.com/books/v1/volumes';
 
-
 const findTechBooks = () => {
     const searchTerm = encodeURI("technology books")
     return fetch(`${BOOKS_URL}?q=${searchTerm}`)
@@ -20,5 +19,6 @@ const findBookById = (bookId) => {
 
 export default {
     findTechBooks,
-    findBooksBySearchTerms
+    findBooksBySearchTerms,
+    findBookById,
 }

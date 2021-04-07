@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -55,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        color: 'white'
     },
     inputRoot: {
         color: 'inherit',
@@ -62,13 +64,9 @@ const useStyles = makeStyles((theme) => ({
     },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
         width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
-        },
     },
     sectionDesktop: {
         display: 'none',
@@ -101,10 +99,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PrimarySearchAppBar() {
     const classes = useStyles();
-    const theme = useTheme();
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-    const [searchValue, setSearchValue] = React.useState("Searching...");
+    const history = useHistory();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+    const [searchValue, setSearchValue] = useState("");
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -127,6 +125,11 @@ export default function PrimarySearchAppBar() {
     };
 
     const preventDefault = (event) => event.preventDefault();
+
+    const handleSearch = (event) => {
+        event.preventDefault();
+        history.push(`/search/${encodeURI(searchValue)}`);
+    };
 
 
     const menuId = 'primary-search-account-menu';
@@ -202,10 +205,10 @@ export default function PrimarySearchAppBar() {
                     <Typography className={classes.title} variant="h5" noWrap>
                         TechTalk
                     </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
+                    <form className={classes.search} onSubmit={handleSearch}>
+                        <IconButton className={classes.searchIcon} type="submit">
                             <SearchIcon />
-                        </div>
+                        </IconButton>
                         <InputBase
                             placeholder="Search Resources…"
                             fullWidth='true'
@@ -214,8 +217,10 @@ export default function PrimarySearchAppBar() {
                                 input: classes.inputInput,
                             }}
                             inputProps={{ 'aria-label': 'search' }}
+                            value={searchValue}
+                            onChange={(event) => setSearchValue(event.target.value)}
                         />
-                    </div>
+                    </form>
                     <div className={classes.grow}>
                         <Link className={classes.navLink} href="#" onClick={preventDefault}>
                             Discussions

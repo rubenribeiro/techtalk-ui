@@ -1,5 +1,6 @@
-import React, {Fragment} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect, Fragment} from 'react';
+import { Link } from 'react-router-dom';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -13,12 +14,16 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Chip from '@material-ui/core/Chip';
+import {
+    DETAILS_ROUTE
+} from '../../const/routes';
 
 const useStyles = makeStyles((theme) => ({
     bookImage: {
-        width: theme.spacing(14),
-        height: theme.spacing(20),
+        width: theme.spacing(8),
+        height: theme.spacing(12),
         marginRight: theme.spacing(2),
+        border: `3px solid #e3e3e3 !important`
     },
     bookDescription: {
         paddingRight: theme.spacing(8)
@@ -26,32 +31,78 @@ const useStyles = makeStyles((theme) => ({
     upVotes: {
         marginRight: theme.spacing(3),
     },
+    voteText: {
+        color: `${theme.palette.primary.dark}!important`
+    },
     metadata :{
         marginTop: theme.spacing(2)
     },
     metadataItem: {
         margin: theme.spacing(1)
+    },
+    commentButton: {
+        height: theme.spacing(3),
+        marginRight: theme.spacing(1),
+        borderRadius: theme.spacing(3)
     }
 
 }));
 
-const BookList = ({book}) => {
-    const classes = useStyles();
-    const MAXIMUM_DESCRIPTION_LENGTH = 60;
+const BookList = ({book, lastItem}) => {
 
+    const MAXIMUM_DESCRIPTION_LENGTH = 500;
+    const classes = useStyles();
+    const theme = useTheme();
+    const [shortDescription, setShortDescription] = useState('');
+    const [vote, setVote] = useState(0);
+
+    const updateBookDescription = () => {
+        if (book.volumeInfo.description !== undefined) {
+            if (book.volumeInfo.description.length > MAXIMUM_DESCRIPTION_LENGTH) {
+                setShortDescription(book.volumeInfo.description.substring(0, MAXIMUM_DESCRIPTION_LENGTH) + '...[Read More].');
+            } else {
+                setShortDescription(book.volumeInfo.description);
+            }
+        }
+    }
+
+    const incrementVote = () => setVote(vote + 1);
+
+    const decrementVote = () => setVote(vote - 1);
+
+    useEffect(() => {
+        updateBookDescription();
+    }, []);
 
     return(
-        <ListItem alignItems="flex-start" divider="true" button>
+        <ListItem
+            alignItems="flex-start"
+            divider={lastItem? false : true}
+            button component={Link} to={`${DETAILS_ROUTE}/${book.id}`}>
             <ListItemAvatar>
-                <Avatar
-                    className={classes.bookImage}
-                    variant="square" alt={book.volumeInfo.title}
-                    src={book.volumeInfo.imageLinks.smallThumbnail}
-                />
+                {
+                    book.volumeInfo.imageLinks.smallThumbnail &&
+                    <Avatar
+                        border={1}
+                        className={classes.bookImage}
+                        variant="square" alt={book.volumeInfo.title}
+                        src={book.volumeInfo.imageLinks.smallThumbnail }
+                    />
+                }
+                {
+                    !book.volumeInfo.imageLinks.smallThumbnail &&
+                    <Avatar
+                        border={1}
+                        className={classes.bookImage}
+                        variant="square" alt={book.volumeInfo.title}
+                        src={"https://via.placeholder.com/100x150"}
+                    />
+                }
+
             </ListItemAvatar>
             <ListItemText
                 className={classes.bookDescription}
-                primary={<Typography variant="h5" component="h5">{book.volumeInfo.title}</Typography>}
+                primary={<Typography color="primary"  variant="subtitle2" component="h6">{book.volumeInfo.title}</Typography>}
                 secondary={
                     <Fragment>
                         <Typography
@@ -59,16 +110,16 @@ const BookList = ({book}) => {
                             variant="body2"
                             color="textPrimary"
                         >
-                            {book.volumeInfo.description}
+                            {shortDescription}
                         </Typography>
                         <div className={classes.metadata} >
                             <Button
                                 variant="outlined"
                                 color="primary"
                                 size="small"
-                                className={classes.button}
+                                className={`${classes.button} ${classes.metadataItem}`}
                                 startIcon={<CommentIcon />}
-                                className={classes.metadataItem}
+                                className={classes.commentButton}
                             >
                                 20
                             </Button>
@@ -78,7 +129,7 @@ const BookList = ({book}) => {
                                 color="primary"
                                 variant="contained"
                                 clickable
-                                size="medium"
+                                size="small"
                             />
                         </div>
 
@@ -89,15 +140,15 @@ const BookList = ({book}) => {
                 <ButtonGroup
                     orientation="vertical"
                     color="primary"
-                    aria-label="vertical contained primary button group"
+                    aria-label="Vote button group"
                     variant="text"
-                    size="large"
+                    size="small"
                 >
-                    <IconButton>
+                    <IconButton onClick={incrementVote}>
                         <KeyboardArrowUpIcon />
                     </IconButton>
-                    <Button disabled>Vote</Button>
-                    <IconButton>
+                    <Button className={classes.voteText} disabled>{vote === 0? 'VOTE' : vote}</Button>
+                    <IconButton onClick={decrementVote}>
                         <KeyboardArrowDownIcon />
                     </IconButton>
                 </ButtonGroup>
