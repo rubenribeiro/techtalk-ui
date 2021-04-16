@@ -6,6 +6,7 @@ export const SEARCH_BY_TITLE= "/search/:title";
 export const DETAILS_ROUTE = "/details";
 export const DETAILS_BY_DID_ROUTE = "/details/:did";
 export const LOGIN_ROUTE = "/login";
+export const REGISTER_ROUTE = '/register';
 export const PROFILE_ROUTE = "/profile";
 export const PROFILE_BY_UID_ROUTE = "/profile/:uid";
 export const DISCUSSIONS_ROUTE = "/discussions";

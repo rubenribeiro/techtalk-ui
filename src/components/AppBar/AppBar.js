@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link as RouterLink, NavLink, useHistory, withRouter } from 'react-router-dom';
 import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -92,12 +93,10 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         borderColor: fade(theme.palette.common.white, 0.15),
         color: fade(theme.palette.common.white, 0.9),
-
-
-    }
+    },
 }));
 
-export default function PrimarySearchAppBar() {
+const PrimarySearchAppBar = () => {
     const classes = useStyles();
     const history = useHistory();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -131,6 +130,10 @@ export default function PrimarySearchAppBar() {
         history.push(`/search/${encodeURI(searchValue)}`);
     };
 
+    const handleLogout = (event) => {
+        history.push("/login");
+    };
+
 
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
@@ -145,6 +148,10 @@ export default function PrimarySearchAppBar() {
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={ () => {
+                handleMenuClose();
+                handleLogout();
+            }}>Log out</MenuItem>
         </Menu>
     );
 
@@ -191,10 +198,10 @@ export default function PrimarySearchAppBar() {
 
     return (
         <div className={classes.grow}>
+            <CssBaseline />
             <AppBar position="fixed">
                 <Container>
                 <Toolbar>
-
                     <IconButton
                         edge="start"
                         color="inherit"
@@ -238,10 +245,10 @@ export default function PrimarySearchAppBar() {
                         {/*        <NotificationsIcon />*/}
                         {/*    </Badge>*/}
                         {/*</IconButton>*/}
-                        <Button variant="outlined" size="small" color="secondary" className={classes.buttonMargin} disableElevation>
+                        <Button variant="outlined" size="small" color="secondary" className={classes.buttonMargin} component={NavLink} to="/login" disableElevation>
                             Log in
                         </Button>
-                        <Button variant="contained" size="small" color="secondary" className={classes.buttonMargin} disableElevation>
+                        <Button variant="contained" size="small" color="secondary" className={classes.buttonMargin} component={NavLink} to="/register" disableElevation>
                             Sign Up
                         </Button>
                         <IconButton
@@ -274,3 +281,5 @@ export default function PrimarySearchAppBar() {
         </div>
     );
 }
+
+export default withRouter(PrimarySearchAppBar);

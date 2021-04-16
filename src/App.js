@@ -12,6 +12,10 @@ import Home from './components/Screens/Home';
 import Discussions from "./components/Screens/Discussions";
 import Search from "./components/Screens/Search";
 import Details from "./components/Screens/Details";
+import Login from "./components/Users/Login";
+import Register from "./components/Users/Register";
+import Profile from "./components/Users/Profile";
+
 import {
     ROOT_ROUTE,
     HOME_ROUTE,
@@ -19,7 +23,10 @@ import {
     DISCUSSIONS_ROUTE,
     SEARCH_ROUTE,
     SEARCH_BY_TITLE,
-    DETAILS_BY_DID_ROUTE
+    DETAILS_BY_DID_ROUTE,
+    LOGIN_ROUTE,
+    REGISTER_ROUTE,
+    PROFILE_ROUTE
 } from './const/routes';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,6 +59,9 @@ const App = () => {
                         <Route path={DISCUSSIONS_ROUTE} component={Discussions} />
                         <Route exact path={[SEARCH_BY_TITLE, SEARCH_ROUTE]} component={Search} />
                         <Route path={DETAILS_BY_DID_ROUTE} component={Details} />
+                        <Route exact path={LOGIN_ROUTE} component={Login} />
+                        <Route exact path={REGISTER_ROUTE} component={Register} />
+                        <Route exact path={PROFILE_ROUTE} component={Profile} />
                     </Switch>
                 </Box>
             </Container>

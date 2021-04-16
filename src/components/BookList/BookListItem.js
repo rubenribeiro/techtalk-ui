@@ -55,6 +55,7 @@ const BookList = ({book, lastItem}) => {
     const theme = useTheme();
     const [shortDescription, setShortDescription] = useState('');
     const [vote, setVote] = useState(0);
+    const [thumbnailURL, setThumbnailURL] = useState('https://via.placeholder.com/58x90')
 
     const updateBookDescription = () => {
         if (book.volumeInfo.description !== undefined) {
@@ -64,6 +65,13 @@ const BookList = ({book, lastItem}) => {
                 setShortDescription(book.volumeInfo.description);
             }
         }
+
+        try {
+            setThumbnailURL(book.volumeInfo.imageLinks.smallThumbnail);
+        } catch {
+            setThumbnailURL('https://via.placeholder.com/58x90');
+        }
+
     }
 
     const incrementVote = () => setVote(vote + 1);
@@ -81,24 +89,14 @@ const BookList = ({book, lastItem}) => {
             button component={Link} to={`${DETAILS_ROUTE}/${book.id}`}>
             <ListItemAvatar>
                 {
-                    book.volumeInfo.imageLinks.smallThumbnail &&
+                    thumbnailURL &&
                     <Avatar
                         border={1}
                         className={classes.bookImage}
                         variant="square" alt={book.volumeInfo.title}
-                        src={book.volumeInfo.imageLinks.smallThumbnail }
+                        src={thumbnailURL}
                     />
                 }
-                {
-                    !book.volumeInfo.imageLinks.smallThumbnail &&
-                    <Avatar
-                        border={1}
-                        className={classes.bookImage}
-                        variant="square" alt={book.volumeInfo.title}
-                        src={"https://via.placeholder.com/100x150"}
-                    />
-                }
-
             </ListItemAvatar>
             <ListItemText
                 className={classes.bookDescription}
