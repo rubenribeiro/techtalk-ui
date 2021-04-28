@@ -146,7 +146,7 @@ const BookList = ({book, lastItem}) => {
                         <KeyboardArrowUpIcon />
                     </IconButton>
                     <Button className={classes.voteText} disabled>{vote === 0? 'VOTE' : vote}</Button>
-                    <IconButton onClick={decrementVote}>
+                    <IconButton onClick={decrementVote} disabled>
                         <KeyboardArrowDownIcon />
                     </IconButton>
                 </ButtonGroup>

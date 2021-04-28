@@ -1,4 +1,6 @@
 import React from 'react';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux'
 import { makeStyles} from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -16,7 +18,7 @@ import Login from "./components/Users/Login";
 import Register from "./components/Users/Register";
 import Profile from "./components/Users/Profile";
 import Admin from "./components/Screens/Admin";
-
+import resourceReducer from "./reducers/resource-reducer";
 import {
     ROOT_ROUTE,
     HOME_ROUTE,
@@ -30,6 +32,12 @@ import {
     PROFILE_ROUTE,
     ADMIN_ROUTE
 } from './const/routes';
+
+const reducer = combineReducers({
+    resourceReducer
+});
+
+const store = createStore(reducer);
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,7 +54,9 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
     const classes = useStyles();
   return (
+
       <ThemeProvider theme={theme}>
+          <Provider store={store}>
           <CssBaseline />
         <BrowserRouter>
           <div className="container">
@@ -70,7 +80,9 @@ const App = () => {
             </Container>
             <Footer />
         </BrowserRouter>
+        </Provider>
       </ThemeProvider>
+
   );
 }
 

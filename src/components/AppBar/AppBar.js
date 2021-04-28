@@ -155,7 +155,8 @@ const PrimarySearchAppBar = () => {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Account</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Favorites</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Admin Page</MenuItem>
             <MenuItem onClick={ () => {
                 handleMenuClose();
                 handleLogout();
@@ -254,7 +255,7 @@ const PrimarySearchAppBar = () => {
                             Playlists
                         </Link>
                         <Link className={classes.navLink} href="#" onClick={preventDefault}>
-                            Technologies
+                            Community
                          </Link>
                     </div>
                     <div className={classes.sectionDesktop}>
