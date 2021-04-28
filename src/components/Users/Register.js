@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -39,13 +39,17 @@ const Register = () => {
     const [credentials, setCredentials] = useState({
         firstName: '',
         lastName: '',
+        username: '',
         email: '',
         password: '',
 
     });
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const classes = useStyles();
     const history = useHistory();
-    const register = () => {
+    const register = (evt) => {
+        evt.preventDefault();
+        console.log("ENTERED REGISTER \n");
         userService.register(credentials)
             .then((user) => {
                 console.log(user);
@@ -53,9 +57,22 @@ const Register = () => {
                     alert("Username already taken")
                 } else {
                     // user successfully registered
-                    history.push("/profile");
-                }})
+                    history.push("/login");
+                }}).catch((err) => {
+                    console.log(err);
+        });
     }
+
+    useEffect(() => {
+        userService.profile()
+            .then((usr) => {
+                if (usr && !isAuthenticated) {
+                    setIsAuthenticated(true);
+                    history.push("/home/1");
+                }}).catch((err) => {
+            console.log(err);
+        });
+    }, [isAuthenticated]);
 
     return (
         <Container component="main" maxWidth="xs">
@@ -97,6 +114,21 @@ const Register = () => {
                                     ...credentials, lastName: e.target.value
                                 })}}
                                 value={credentials.lastName}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="username"
+                                label="Username"
+                                name="username"
+                                autoComplete="username"
+                                onChange={(e) => {setCredentials({
+                                    ...credentials, username: e.target.value
+                                })}}
+                                value={credentials.username}
                             />
                         </Grid>
                         <Grid item xs={12}>

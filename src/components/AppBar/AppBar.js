@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Link as RouterLink, NavLink, useHistory, withRouter } from 'react-router-dom';
 import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,6 +19,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import userService from '../../services/user-service'
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -102,6 +103,7 @@ const PrimarySearchAppBar = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const [searchValue, setSearchValue] = useState("");
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -131,7 +133,13 @@ const PrimarySearchAppBar = () => {
     };
 
     const handleLogout = (event) => {
-        history.push("/login");
+        userService.logout()
+            .then(() => {
+                setIsAuthenticated(false);
+                history.push('/home/1');
+            }).catch((err) => {
+            console.log(err);
+        });
     };
 
 
@@ -147,7 +155,7 @@ const PrimarySearchAppBar = () => {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Account</MenuItem>
             <MenuItem onClick={ () => {
                 handleMenuClose();
                 handleLogout();
@@ -196,6 +204,16 @@ const PrimarySearchAppBar = () => {
         </Menu>
     );
 
+    useEffect(() => {
+        userService.profile()
+            .then((usr) => {
+                if (usr && !isAuthenticated) {
+                    setIsAuthenticated(true);
+                }}).catch((err) => {
+                    console.log(err);
+        });
+    }, [isAuthenticated]);
+
     return (
         <div className={classes.grow}>
             <CssBaseline />
@@ -218,7 +236,7 @@ const PrimarySearchAppBar = () => {
                         </IconButton>
                         <InputBase
                             placeholder="Search Resources…"
-                            fullWidth='true'
+                            fullWidth
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
@@ -240,27 +258,38 @@ const PrimarySearchAppBar = () => {
                          </Link>
                     </div>
                     <div className={classes.sectionDesktop}>
-                        {/*<IconButton aria-label="show 20 new notifications" color="inherit">*/}
-                        {/*    <Badge badgeContent={20} color="secondary">*/}
-                        {/*        <NotificationsIcon />*/}
-                        {/*    </Badge>*/}
-                        {/*</IconButton>*/}
-                        <Button variant="outlined" size="small" color="secondary" className={classes.buttonMargin} component={NavLink} to="/login" disableElevation>
-                            Log in
-                        </Button>
-                        <Button variant="contained" size="small" color="secondary" className={classes.buttonMargin} component={NavLink} to="/register" disableElevation>
-                            Sign Up
-                        </Button>
-                        <IconButton
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
+
+
+                        {
+                            !isAuthenticated && <Fragment>
+                                <Button variant="outlined" size="small" color="secondary" className={classes.buttonMargin} component={NavLink} to="/login" disableElevation>
+                                    Log in
+                                </Button>
+                                <Button variant="contained" size="small" color="secondary" className={classes.buttonMargin} component={NavLink} to="/register" disableElevation>
+                                    Sign Up
+                                </Button>
+                            </Fragment>
+                        }
+                        {
+                            isAuthenticated && <Fragment>
+                                <IconButton aria-label="User Notifications" color="inherit">
+                                    <Badge badgeContent={2} color="secondary">
+                                        <NotificationsIcon />
+                                    </Badge>
+                                </IconButton>
+                                <IconButton
+                                    edge="end"
+                                    aria-label="account of current user"
+                                    aria-controls={menuId}
+                                    aria-haspopup="true"
+                                    onClick={handleProfileMenuOpen}
+                                    color="inherit"
+                                >
+                                    <AccountCircle />
+                                </IconButton>
+                            </Fragment>
+
+                        }
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton

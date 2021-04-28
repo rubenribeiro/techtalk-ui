@@ -16,7 +16,8 @@ import Button from "@material-ui/core/Button";
 import Chip from '@material-ui/core/Chip';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import CommentIcon from "@material-ui/icons/Comment";
+import CommentIcon from '@material-ui/icons/Comment';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,15 +65,17 @@ const Details = () => {
     const [book, setBook] = useState({});
 
     const findBook = () => {
-        if (did !== undefined) {
+        if (did && did !== undefined) {
             bookService.findBookById(did)
                 .then((techBook) => {
+                    console.log(techBook);
                     setBook(techBook);
                 });
         }
     }
 
     useEffect(() => {
+        console.log("LOADING DETAILS \n");
         findBook();
     }, []);
 
@@ -81,9 +84,16 @@ const Details = () => {
             <Grid item xs={9}>
                 <Typography variant="subtitle2" component="h6">Book Details</Typography>
                 <Paper className={classes.paper}>
-
-                    {
-                        book.volumeInfo && <Box p={3}>
+                    { !book.volumeInfo &&
+                        <Box pt={3} pb={1}>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} align="center">
+                                    <CircularProgress />
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    }
+                    {book.volumeInfo && <Box p={3}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <IconButton
@@ -188,7 +198,6 @@ const Details = () => {
             </Grid>
             <Sidebar />
         </Grid>
-
     );
 };
 

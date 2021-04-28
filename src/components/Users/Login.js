@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -36,26 +36,35 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
     const [credentials, setCredentials] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
+        username: '',
         password: '',
     });
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const classes = useStyles();
     const history = useHistory();
 
     const login = ()  => {
         userService.login(credentials)
-            .then((user) => {
-                console.log(user);
-                if (user === 0) {
+            .then((currentUser) => {
+                console.log(currentUser);
+                if (currentUser === 0) {
                     alert("login failed, try again")
                 } else {
-                    // user successfully registered
-                    history.push("/profile");
+                    // log in successful
+                    history.push("/home/1");
                 }})
-        history.push("/profile");
     };
+
+    useEffect(() => {
+        userService.profile()
+            .then((usr) => {
+                if (usr && !isAuthenticated) {
+                    setIsAuthenticated(true);
+                    history.push("/home/1");
+                }}).catch((err) => {
+            console.log(err);
+        });
+    }, [isAuthenticated]);
 
     return (
         <Container component="main" maxWidth="xs">
@@ -67,21 +76,21 @@ const Login = () => {
                     Log in
                 </Typography>
                 <form className={classes.form} noValidate>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        onChange={(e) => {setCredentials({
-                            ...credentials, email: e.target.value
-                        })}}
-                        value={credentials.email}
-                    />
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                            onChange={(e) => {setCredentials({
+                                ...credentials, username: e.target.value
+                            })}}
+                            value={credentials.username}
+                        />
+                    </Grid>
                     <TextField
                         variant="outlined"
                         margin="normal"

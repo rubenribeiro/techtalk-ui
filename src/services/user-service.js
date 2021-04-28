@@ -24,7 +24,12 @@ const login = (credentials) => {
         .then(response => response.json());
 }
 
-const logout = () => {}
+const logout = () => {
+    return fetch(`${USER_API}/logout`, {
+        method: "POST",
+        credentials: "include"
+    }).then(() => {});
+}
 
 const profile = () => {
     return fetch (`${USER_API}/profile`, {
@@ -33,9 +38,11 @@ const profile = () => {
     }).then(response => response.json());
 }
 
-export default {
+const api = {
     register,
     login,
     logout,
     profile,
 }
+
+export default api;

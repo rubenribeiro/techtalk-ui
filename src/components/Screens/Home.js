@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Link, useParams} from 'react-router-dom';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import {Box, Grid, Paper, Typography} from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Sidebar from '../Sidebar';
 import BookList from '../BookList';
 import NavTabs from '../NavTabs';
@@ -28,11 +29,15 @@ const Home = () => {
     const { title } = useParams();
 
     const [books, setBooks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const findBooks = () => {
         bookService.findTechBooks()
             .then ((techBooks) => {
                 setBooks(techBooks.items);
+                setLoading(false);
+                console.log(JSON.stringify(techBooks))
+
             });
 
     }
@@ -47,6 +52,16 @@ const Home = () => {
                 <Typography variant="subtitle2" component="h6">Latest Resources</Typography>
                 <Paper className={`${classes.paper} ${classes.paperMain}`}>
                     <NavTabs />
+                    {
+                        loading &&
+                            <Box pt={3} pb={1}>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} align="center">
+                                        <CircularProgress />
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                    }
                     <BookList books={books} />
                 </Paper>
             </Grid>

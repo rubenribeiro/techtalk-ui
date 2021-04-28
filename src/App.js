@@ -15,6 +15,7 @@ import Details from "./components/Screens/Details";
 import Login from "./components/Users/Login";
 import Register from "./components/Users/Register";
 import Profile from "./components/Users/Profile";
+import Admin from "./components/Screens/Admin";
 
 import {
     ROOT_ROUTE,
@@ -26,7 +27,8 @@ import {
     DETAILS_BY_DID_ROUTE,
     LOGIN_ROUTE,
     REGISTER_ROUTE,
-    PROFILE_ROUTE
+    PROFILE_ROUTE,
+    ADMIN_ROUTE
 } from './const/routes';
 
 const useStyles = makeStyles((theme) => ({
@@ -54,14 +56,15 @@ const App = () => {
                 <Box component="div" className={classes.appContainer} p={3}>
                     <Switch>
                         <Route exact path={ROOT_ROUTE} render={() => <Redirect to="/home/1" />} />
-                        <Route path={HOME_ROUTE} component={Home} />
-                        <Route path={HOME_BY_PAGE_ROUTE} component={Home} />
-                        <Route path={DISCUSSIONS_ROUTE} component={Discussions} />
+                        <Route exact path={HOME_ROUTE} component={Home} />
+                        <Route exact path={HOME_BY_PAGE_ROUTE} component={Home} />
+                        <Route exact path={DISCUSSIONS_ROUTE} component={Discussions} />
                         <Route exact path={[SEARCH_BY_TITLE, SEARCH_ROUTE]} component={Search} />
-                        <Route path={DETAILS_BY_DID_ROUTE} component={Details} />
+                        <Route exact path={DETAILS_BY_DID_ROUTE} component={Details} />
                         <Route exact path={LOGIN_ROUTE} component={Login} />
                         <Route exact path={REGISTER_ROUTE} component={Register} />
                         <Route exact path={PROFILE_ROUTE} component={Profile} />
+                        <Route exact path={ADMIN_ROUTE} component={Admin} />
                     </Switch>
                 </Box>
             </Container>

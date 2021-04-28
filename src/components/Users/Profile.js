@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Profile = () => {
+    const {userId} = useParams();
     const [currentUser, setCurrentUser] = useState({});
     useEffect(() => {
         userService.profile()
