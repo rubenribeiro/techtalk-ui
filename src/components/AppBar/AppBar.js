@@ -12,13 +12,16 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
+import ChatIcon from '@material-ui/icons/Chat';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ForumTwoToneIcon from '@material-ui/icons/ForumTwoTone';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
 import userService from '../../services/user-service'
 
 const useStyles = makeStyles((theme) => ({
@@ -104,6 +107,7 @@ const PrimarySearchAppBar = () => {
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const [searchValue, setSearchValue] = useState("");
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [currentUser, setCurrentUser] = useState({});
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -135,11 +139,20 @@ const PrimarySearchAppBar = () => {
     const handleAdminPage = (event) => {
         history.push("/admin");
     }
+
+    const handleProfilePage = (event) => {
+        history.push("/profile");
+    }
+
+    const handleFavoritesPage = (event) => {
+        history.push("/profile");
+    }
     const handleLogout = (event) => {
         userService.logout()
             .then(() => {
                 setIsAuthenticated(false);
-                history.push('/home/1');
+                window.location.reload();
+                history.push("/");
             }).catch((err) => {
             console.log(err);
         });
@@ -157,12 +170,26 @@ const PrimarySearchAppBar = () => {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Favorites</MenuItem>
             <MenuItem onClick={ () => {
                 handleMenuClose();
-                handleAdminPage();
-            }}>Admin</MenuItem>
+                handleProfilePage();
+            }}>Profile</MenuItem>
+            <MenuItem onClick={ () => {
+                handleMenuClose();
+                handleFavoritesPage();
+            }}>Favorites</MenuItem>
+            {currentUser && isAuthenticated && currentUser.role === "ADMIN" &&
+
+                <React.Fragment>
+                    <Divider light />
+                    <MenuItem onClick={ () => {
+                        handleMenuClose();
+                        handleAdminPage();
+                    }}>Admin</MenuItem>
+                    <Divider light />
+                </React.Fragment>
+            }
+
             <MenuItem onClick={ () => {
                 handleMenuClose();
                 handleLogout();
@@ -183,19 +210,30 @@ const PrimarySearchAppBar = () => {
         >
             <MenuItem>
                 <IconButton aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="secondary">
-                        <MailIcon />
+                    <Badge badgeContent={1} color="secondary">
+                        <PeopleAltIcon  />
                     </Badge>
                 </IconButton>
-                <p>Messages</p>
+                <p>Community</p>
             </MenuItem>
             <MenuItem>
                 <IconButton aria-label="show 11 new notifications" color="inherit">
-                    <Badge badgeContent={11} color="secondary">
-                        <NotificationsIcon />
+                    <Badge badgeContent={2} color="secondary">
+                        <PlaylistPlayIcon />
                     </Badge>
                 </IconButton>
-                <p>Notifications</p>
+                <p>Playlists</p>
+            </MenuItem>
+            <MenuItem onClick={handleProfileMenuOpen}>
+                <IconButton
+                    aria-label="account of current user"
+                    aria-controls="primary-search-account-menu"
+                    aria-haspopup="true"
+                    color="inherit"
+                >
+                    <ChatIcon />
+                </IconButton>
+                <p>Discussions</p>
             </MenuItem>
             <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
@@ -215,10 +253,12 @@ const PrimarySearchAppBar = () => {
         userService.profile()
             .then((usr) => {
                 if (usr && !isAuthenticated) {
+                    setCurrentUser(usr);
                     setIsAuthenticated(true);
                 }}).catch((err) => {
                     console.log(err);
         });
+
     }, [isAuthenticated]);
 
     return (

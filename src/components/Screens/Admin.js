@@ -2,9 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Link, useParams} from 'react-router-dom';
 import { Grid, Paper, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import UsersAdmin from '../UsersAdmin';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PaginationLink from "../PaginationLink";
 
 

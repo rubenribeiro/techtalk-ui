@@ -56,6 +56,8 @@ const Register = () => {
                 if (user === 0) {
                     alert("Username already taken")
                 } else {
+
+                    window.location.reload();
                     // user successfully registered
                     history.push("/login");
                 }}).catch((err) => {
@@ -106,6 +108,7 @@ const Register = () => {
                                 required
                                 id="lastName"
                                 label="Last Name"
+                                fullWidth
                                 name="lastName"
                                 autoComplete="lname"
                                 onChange={(e) => {setCredentials({
@@ -120,6 +123,7 @@ const Register = () => {
                                 required
                                 id="username"
                                 label="Username"
+                                fullWidth
                                 name="username"
                                 autoComplete="username"
                                 onChange={(e) => {setCredentials({
@@ -132,6 +136,7 @@ const Register = () => {
                             <TextField
                                 variant="outlined"
                                 required
+                                fullWidth
                                 id="email"
                                 label="Email Address"
                                 name="email"
@@ -149,6 +154,7 @@ const Register = () => {
                                 name="password"
                                 label="Password"
                                 type="password"
+                                fullWidth
                                 autoComplete="current-password"
                                 onChange={(e) => {setCredentials({
                                     ...credentials, password: e.target.value

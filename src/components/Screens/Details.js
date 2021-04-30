@@ -62,9 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Details = ({ userProfile,
-                   findUserProfile,
-                   updateUserProfile }) => {
+const Details = () => {
     const history = useHistory();
     const { did } = useParams();
     const classes = useStyles();
@@ -83,62 +81,46 @@ const Details = ({ userProfile,
         }
     }
 
-    // const handleAddToFavorites = () => {
-    //     favorites.push(did);
-    //     setCurrentUser({
-    //         ...currentUser,
-    //         favorites
-    //
-    //     })
-    //     userService.updateUser(currentUser);
-    //     setManualViewUpdate(true);
-    // }
 
     const handleAddToFavorites = () => {
         favorites.push(did);
-        updateUserProfile({
-            ...userProfile,
+        setCurrentUser({
+            ...currentUser,
             favorites
-        });
 
-       // setManualViewUpdate(true);
-    }
+        })
 
-    // useEffect(() => {
-    //     findBook();
-    //     userService.profile()
-    //         .then((usr) => {
-    //             if (usr && !isAuthenticated) {
-    //                 setIsAuthenticated(true);
-    //                 setFavorites(usr.favorites);
-    //                 console.log("RUNNING USER EFFECT");
-    //                 console.log(usr)
-    //                 console.log("Updating current user")
-    //                 console.log(currentUser);
-    //                 setCurrentUser({
-    //                     ...usr,
-    //                     favorites: usr.favorites
-    //                 });
-    //                 console.log("Updating user complete")
-    //                 console.log(currentUser);
-    //                 console.log("END RUUNING USER EFFERCT");
-    //             } else {
-    //                 setCurrentUser(usr);
-    //             }}).catch((err) => {
-    //         console.log(err);
-    //     });
-    // }, [isAuthenticated, manualViewUpdate]);
+        userService.updateUserById(currentUser._id, currentUser);
+        setManualViewUpdate(true);
+     }
+
+
+
     useEffect(() => {
         findBook();
-        findUserProfile();
-        if (userProfile && !isAuthenticated) {
-            setIsAuthenticated(true);
-            setFavorites(userProfile.favorites)
-        }
+        userService.profile()
+            .then((usr) => {
+                if (usr && !isAuthenticated) {
+                    setIsAuthenticated(true);
+                    setFavorites(usr.favorites);
+                    console.log("RUNNING USER EFFECT");
+                    console.log(usr)
+                    console.log("Updating current user")
+                    console.log(currentUser);
+                    setCurrentUser({
+                        ...usr,
+                        favorites: usr.favorites
+                    });
+                    console.log("Updating user complete")
+                    console.log(currentUser);
+                    console.log("END RUUNING USER EFFERCT");
+                } else {
+                    setCurrentUser(usr);
+                }}).catch((err) => {
+            console.log(err);
+        });
+    }, [isAuthenticated, manualViewUpdate]);
 
-        console.log("IN USER EFFECT");
-        console.log(userProfile);
-    }, [isAuthenticated, manualViewUpdate, userProfile]);
 
     return(
         <Grid container spacing={2}>
@@ -179,7 +161,7 @@ const Details = ({ userProfile,
                                 <Typography variant="h4" component="h4">{book.volumeInfo.title}</Typography>
                                 <Typography variant="subtitle2" component="h6">{book.volumeInfo.subtitle}</Typography>
                                 <br />
-                                { isAuthenticated && did && did !== undefined && userProfile && !userProfile.favorites.includes(did) &&
+                                { isAuthenticated && did && did !== undefined && currentUser && !currentUser.favorites.includes(did) &&
                                     <Button
                                         variant="outlined"
                                         color="primary"
@@ -190,8 +172,8 @@ const Details = ({ userProfile,
                                     </Button>
 
                                 }
-                                {JSON.stringify(userProfile)}
-                                { isAuthenticated && did && did !== undefined && userProfile && userProfile.favorites.includes(did) &&
+
+                                { isAuthenticated && did && did !== undefined && currentUser && currentUser.favorites.includes(did) &&
                                     <Alert severity="success">Resource in your favorites!</Alert>
                                 }
 
@@ -274,40 +256,7 @@ const Details = ({ userProfile,
             </Grid>
             <Sidebar />
         </Grid>
-    );
-};
+    )
+}
 
-const stateToPropsMapper = (state) => {
-
-    return {
-        userprofile: state.userProfileReducer.userProfile
-    }
-};
-
-const dispatchToPropsMapper = (dispatch) => {
-    return {
-        findUserProfile: () => {
-            userService.profile()
-                .then(userProfile => {
-                    dispatch({
-                        type: "FIND_USER_PROFILE",
-                        userProfile
-                    });
-                });
-        },
-        updateUserProfile: (user) => {
-            userService.updateUserProfile(user)
-                .then(userProfile => {
-                    dispatch({
-                        type: "UPDATE_USER_PROFILE",
-                        userProfile
-                    });
-                });
-        },
-
-    }
-};
-
-export default connect(stateToPropsMapper, dispatchToPropsMapper)(Details);
-
-//export default Details;
+export default Details;

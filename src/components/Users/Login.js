@@ -40,10 +40,12 @@ const Login = () => {
         password: '',
     });
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [manualRefresh, setManualRefresh] = useState(false);
     const classes = useStyles();
     const history = useHistory();
 
-    const login = ()  => {
+    const login = (event)  => {
+        event.preventDefault();
         userService.login(credentials)
             .then((currentUser) => {
                 console.log(currentUser);
@@ -51,6 +53,9 @@ const Login = () => {
                     alert("login failed, try again")
                 } else {
                     // log in successful
+                    setIsAuthenticated(true);
+                    setManualRefresh(true);
+                    window.location.reload();
                     history.push("/home/1");
                 }})
     };
@@ -61,10 +66,11 @@ const Login = () => {
                 if (usr && !isAuthenticated) {
                     setIsAuthenticated(true);
                     history.push("/home/1");
-                }}).catch((err) => {
+                } }).catch((err) => {
+
             console.log(err);
         });
-    }, [isAuthenticated]);
+    }, []);
 
     return (
         <Container component="main" maxWidth="xs">

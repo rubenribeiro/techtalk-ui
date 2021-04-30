@@ -1,4 +1,5 @@
-const USER_API = 'http://localhost:4000/api/users';
+//const USER_API = 'http://localhost:4000/api/users';
+const USER_API  = 'https://techtalk-api.herokuapp.com/api/users';
 
 const register = (credentials) => {
     return fetch (`${USER_API}/register`, {

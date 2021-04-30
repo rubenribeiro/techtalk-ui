@@ -1,6 +1,6 @@
 //const RESOURCE_URL = 'https://www.googleapis.com/books/v1/volumes';
-//const RESOURCE_URL  = 'https://techtalk-api.herokuapp.com/api/resources';
-const RESOURCE_URL  = 'http://localhost:4000/api/resources';
+const RESOURCE_URL  = 'https://techtalk-api.herokuapp.com/api/resources';
+//const RESOURCE_URL  = 'http://localhost:4000/api/resources';
 
 export const findAllResources = () =>
     fetch(RESOURCE_URL)
