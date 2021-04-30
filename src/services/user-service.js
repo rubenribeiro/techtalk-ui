@@ -52,8 +52,8 @@ const findUserById = (userId) => {
     }).then(response => response.json());
 }
 
-export const updateUser = (user) =>
-    fetch(`${USER_API}/profile`, {
+export const updateUserById = (userId, user) =>
+    fetch(`${USER_API}/profile/${userId}`, {
         method: 'PUT',
         body: JSON.stringify(user),
         headers: {
@@ -62,6 +62,25 @@ export const updateUser = (user) =>
     })
         .then( response => response.json());
 
+export const deleteUser = (userId) =>
+    fetch(`${USER_API}/profile/${userId}`, {
+        method:  'DELETE'
+    })
+        .then( response => response.json());
+
+const addUser = (user) => {
+    return fetch (`${USER_API}/register`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(user),
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then(response => response.json());
+}
+
+
 const api = {
     register,
     login,
@@ -69,7 +88,9 @@ const api = {
     profile,
     findAllUsers,
     findUserById,
-    updateUser,
+    updateUserById,
+    deleteUser,
+    addUser
 }
 
 export default api;

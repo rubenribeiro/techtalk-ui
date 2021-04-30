@@ -37,8 +37,6 @@ const Community = ({users = [], findAllUsers}) => {
        if (users.length > 0) {
            setLoading(false);
        }
-       console.log("IN USE EFFECT \n")
-       console.log(JSON.stringify(users));
     }, []);
 
     return(
@@ -64,7 +62,6 @@ const Community = ({users = [], findAllUsers}) => {
 };
 
 const stateToPropsMapper = (state) => {
-    console.log("IN STATE")
     console.log(state.userReducer.users);
     return {
         users: state.userReducer.users
@@ -76,10 +73,8 @@ const dispatchToPropsMapper = (dispatch) => {
         findAllUsers: () => {
             userService.findAllUsers()
                 .then(users => {
-                    console.log(" IN USER SERVICE");
-                    console.log(users);
                     dispatch({
-                        type: "FIND_USERS",
+                        type: "FIND_ALL_USERS",
                         users
                     });
                 });

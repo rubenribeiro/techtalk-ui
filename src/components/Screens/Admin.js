@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import {Link, useParams} from 'react-router-dom';
 import { Grid, Paper, Typography } from '@material-ui/core';
-import Sidebar from '../Sidebar';
-import AdminChart from '../AdminChart';
+import Button from '@material-ui/core/Button';
+import UsersAdmin from '../UsersAdmin';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PaginationLink from "../PaginationLink";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,9 +28,9 @@ const useStyles = makeStyles((theme) => ({
     headerSpacing: {
         paddingTop: theme.spacing(2)
     }
+
+
 }));
-
-
 
 const Admin = () => {
     const classes = useStyles();
@@ -36,18 +38,14 @@ const Admin = () => {
 
     return(
         <Grid container spacing={2}>
-            <Grid item xs={9}>
-                <Typography variant="subtitle2" component="h6">Admin Page</Typography>
+            <Grid item xs={12}>
                 <Paper className={`${classes.paper} ${classes.paperMain}`}>
-                        <Typography align="left" className={classes.headerSpacing} component="h4" variant="h4">Admin Dashboard</Typography>
-                        <br />
-                        <AdminChart />
-                        <Typography align="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Typography>
-                        <br />
-                        <Typography align="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Typography>
+                    <UsersAdmin />
                 </Paper>
             </Grid>
-            <Sidebar />
+            <Grid item xs={12} container justify="center">
+                <PaginationLink />
+            </Grid>
         </Grid>
     );
 };

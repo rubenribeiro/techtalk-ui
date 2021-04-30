@@ -149,7 +149,6 @@ const Register = () => {
                                 name="password"
                                 label="Password"
                                 type="password"
-                                id="password"
                                 autoComplete="current-password"
                                 onChange={(e) => {setCredentials({
                                     ...credentials, password: e.target.value

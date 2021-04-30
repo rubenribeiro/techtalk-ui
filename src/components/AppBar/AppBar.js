@@ -132,6 +132,9 @@ const PrimarySearchAppBar = () => {
         history.push(`/search/${encodeURI(searchValue)}`);
     };
 
+    const handleAdminPage = (event) => {
+        history.push("/admin");
+    }
     const handleLogout = (event) => {
         userService.logout()
             .then(() => {
@@ -156,7 +159,10 @@ const PrimarySearchAppBar = () => {
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>Favorites</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Admin Page</MenuItem>
+            <MenuItem onClick={ () => {
+                handleMenuClose();
+                handleAdminPage();
+            }}>Admin</MenuItem>
             <MenuItem onClick={ () => {
                 handleMenuClose();
                 handleLogout();
@@ -252,10 +258,10 @@ const PrimarySearchAppBar = () => {
                         <Link className={classes.navLink} component={NavLink} to='/community'>
                             Community
                         </Link>
-                        <Link className={classes.navLink} href="#" component={NavLink} to='/discussions'>
+                        <Link className={classes.navLink}  component={NavLink} to='/discussions'>
                             Discussions
                         </Link>
-                        <Link className={classes.navLink} href="#" component={NavLink} to='/playlists'>
+                        <Link className={classes.navLink} component={NavLink} to='/playlists'>
                             Playlists
                         </Link>
                     </div>
