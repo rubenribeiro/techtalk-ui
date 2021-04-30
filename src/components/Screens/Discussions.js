@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 
 const Discussions = () => {
     return(
-        <Typography>Discussions Screen</Typography>
+        <Typography>Discussions Page</Typography>
     );
 };
 

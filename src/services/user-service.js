@@ -38,11 +38,38 @@ const profile = () => {
     }).then(response => response.json());
 }
 
+const findAllUsers = () => {
+    return fetch (`${USER_API}`, {
+        method: "POST",
+        credentials: "include",
+    }).then(response => response.json());
+}
+
+const findUserById = (userId) => {
+    return fetch (`${USER_API}/profile/${userId}`, {
+        method: "POST",
+        credentials: "include",
+    }).then(response => response.json());
+}
+
+export const updateUser = (user) =>
+    fetch(`${USER_API}/profile`, {
+        method: 'PUT',
+        body: JSON.stringify(user),
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then( response => response.json());
+
 const api = {
     register,
     login,
     logout,
     profile,
+    findAllUsers,
+    findUserById,
+    updateUser,
 }
 
 export default api;

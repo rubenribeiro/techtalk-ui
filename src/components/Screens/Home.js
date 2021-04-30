@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {Link, useParams} from 'react-router-dom';
 import {Box, Grid, Paper, Typography} from '@material-ui/core';
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Home = () => {
+const Home = ({resources = [], findTechBooks}) => {
     const classes = useStyles();
     const { title } = useParams();
 
@@ -36,10 +37,8 @@ const Home = () => {
             .then ((techBooks) => {
                 setBooks(techBooks.items);
                 setLoading(false);
-                console.log(JSON.stringify(techBooks))
 
             });
-
     }
 
     useEffect(() => {
@@ -73,4 +72,26 @@ const Home = () => {
     );
 };
 
-export default Home;
+const stateToPropsMapper = (state) => {
+    return {
+        resources: state.resourceReducer.resources
+    }
+};
+
+const dispatchToPropsMapper = (dispatch) => {
+    return {
+        findTechBooks: () => {
+            bookService.findTechBooks()
+                .then(resources => {
+                    let newResources = resources;
+                    dispatch({
+                        type: "FIND_RESOURCES",
+                        newResources
+                    });
+                });
+        },
+
+    }
+};
+
+export default connect(stateToPropsMapper, dispatchToPropsMapper)(Home);

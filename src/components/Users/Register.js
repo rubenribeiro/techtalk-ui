@@ -91,7 +91,6 @@ const Register = () => {
                                 name="firstName"
                                 variant="outlined"
                                 required
-                                fullWidth
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
@@ -105,7 +104,6 @@ const Register = () => {
                             <TextField
                                 variant="outlined"
                                 required
-                                fullWidth
                                 id="lastName"
                                 label="Last Name"
                                 name="lastName"
@@ -120,7 +118,6 @@ const Register = () => {
                             <TextField
                                 variant="outlined"
                                 required
-                                fullWidth
                                 id="username"
                                 label="Username"
                                 name="username"
@@ -135,7 +132,6 @@ const Register = () => {
                             <TextField
                                 variant="outlined"
                                 required
-                                fullWidth
                                 id="email"
                                 label="Email Address"
                                 name="email"
@@ -150,7 +146,6 @@ const Register = () => {
                             <TextField
                                 variant="outlined"
                                 required
-                                fullWidth
                                 name="password"
                                 label="Password"
                                 type="password"
@@ -165,7 +160,6 @@ const Register = () => {
                     </Grid>
                     <Button
                         type="submit"
-                        fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}

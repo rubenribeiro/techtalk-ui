@@ -1,8 +1,9 @@
 import React from 'react';
+import Typography from "@material-ui/core/Typography";
 
 const Playlists = () => {
     return(
-        <h1>Playlists Screen</h1>
+        <Typography>Playlists Page</Typography>
     );
 };
 

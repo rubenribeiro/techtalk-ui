@@ -225,6 +225,7 @@ const PrimarySearchAppBar = () => {
                         edge="start"
                         color="inherit"
                         aria-label="open drawer"
+                        component={NavLink} to='/'
                     >
                         <ForumTwoToneIcon />
                     </IconButton>
@@ -248,25 +249,25 @@ const PrimarySearchAppBar = () => {
                         />
                     </form>
                     <div className={classes.grow}>
-                        <Link className={classes.navLink} href="#" onClick={preventDefault}>
+                        <Link className={classes.navLink} component={NavLink} to='/community'>
+                            Community
+                        </Link>
+                        <Link className={classes.navLink} href="#" component={NavLink} to='/discussions'>
                             Discussions
                         </Link>
-                        <Link className={classes.navLink} href="#" onClick={preventDefault}>
+                        <Link className={classes.navLink} href="#" component={NavLink} to='/playlists'>
                             Playlists
                         </Link>
-                        <Link className={classes.navLink} href="#" onClick={preventDefault}>
-                            Community
-                         </Link>
                     </div>
                     <div className={classes.sectionDesktop}>
 
 
                         {
                             !isAuthenticated && <Fragment>
-                                <Button variant="outlined" size="small" color="secondary" className={classes.buttonMargin} component={NavLink} to="/login" disableElevation>
+                                <Button variant="outlined" size="small" color="secondary" className={classes.buttonMargin} component={NavLink} to="/login">
                                     Log in
                                 </Button>
-                                <Button variant="contained" size="small" color="secondary" className={classes.buttonMargin} component={NavLink} to="/register" disableElevation>
+                                <Button variant="contained" size="small" color="secondary" className={classes.buttonMargin} component={NavLink} to="/register">
                                     Sign Up
                                 </Button>
                             </Fragment>

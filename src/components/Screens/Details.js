@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { connect } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import {Grid, Paper, Typography, Box} from "@material-ui/core";
 import Sidebar from "../Sidebar";
@@ -17,7 +18,10 @@ import Chip from '@material-ui/core/Chip';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import CommentIcon from '@material-ui/icons/Comment';
+import Alert from '@material-ui/lab/Alert';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import userService from '../../services/user-service'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -58,26 +62,83 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Details = () => {
+const Details = ({ userProfile,
+                   findUserProfile,
+                   updateUserProfile }) => {
     const history = useHistory();
     const { did } = useParams();
     const classes = useStyles();
     const [book, setBook] = useState({});
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [currentUser,setCurrentUser] = useState({});
+    const [favorites, setFavorites] = useState([]);
+    const [manualViewUpdate, setManualViewUpdate] = useState(false);
 
     const findBook = () => {
         if (did && did !== undefined) {
             bookService.findBookById(did)
                 .then((techBook) => {
-                    console.log(techBook);
                     setBook(techBook);
                 });
         }
     }
 
+    // const handleAddToFavorites = () => {
+    //     favorites.push(did);
+    //     setCurrentUser({
+    //         ...currentUser,
+    //         favorites
+    //
+    //     })
+    //     userService.updateUser(currentUser);
+    //     setManualViewUpdate(true);
+    // }
+
+    const handleAddToFavorites = () => {
+        favorites.push(did);
+        updateUserProfile({
+            ...userProfile,
+            favorites
+        });
+
+       // setManualViewUpdate(true);
+    }
+
+    // useEffect(() => {
+    //     findBook();
+    //     userService.profile()
+    //         .then((usr) => {
+    //             if (usr && !isAuthenticated) {
+    //                 setIsAuthenticated(true);
+    //                 setFavorites(usr.favorites);
+    //                 console.log("RUNNING USER EFFECT");
+    //                 console.log(usr)
+    //                 console.log("Updating current user")
+    //                 console.log(currentUser);
+    //                 setCurrentUser({
+    //                     ...usr,
+    //                     favorites: usr.favorites
+    //                 });
+    //                 console.log("Updating user complete")
+    //                 console.log(currentUser);
+    //                 console.log("END RUUNING USER EFFERCT");
+    //             } else {
+    //                 setCurrentUser(usr);
+    //             }}).catch((err) => {
+    //         console.log(err);
+    //     });
+    // }, [isAuthenticated, manualViewUpdate]);
     useEffect(() => {
-        console.log("LOADING DETAILS \n");
         findBook();
-    }, []);
+        findUserProfile();
+        if (userProfile && !isAuthenticated) {
+            setIsAuthenticated(true);
+            setFavorites(userProfile.favorites)
+        }
+
+        console.log("IN USER EFFECT");
+        console.log(userProfile);
+    }, [isAuthenticated, manualViewUpdate, userProfile]);
 
     return(
         <Grid container spacing={2}>
@@ -118,13 +179,28 @@ const Details = () => {
                                 <Typography variant="h4" component="h4">{book.volumeInfo.title}</Typography>
                                 <Typography variant="subtitle2" component="h6">{book.volumeInfo.subtitle}</Typography>
                                 <br />
-                                <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    endIcon={<PlaylistAddCheckIcon />}
-                                >
-                                    Add to Playlist
-                                </Button>
+                                { isAuthenticated && did && did !== undefined && userProfile && !userProfile.favorites.includes(did) &&
+                                    <Button
+                                        variant="outlined"
+                                        color="primary"
+                                        onClick={handleAddToFavorites}
+                                        endIcon={<PlaylistAddCheckIcon />}
+                                    >
+                                        Add to Favorites
+                                    </Button>
+
+                                }
+                                {JSON.stringify(userProfile)}
+                                { isAuthenticated && did && did !== undefined && userProfile && userProfile.favorites.includes(did) &&
+                                    <Alert severity="success">Resource in your favorites!</Alert>
+                                }
+
+                                {
+                                    !isAuthenticated &&
+                                    <Alert severity="warning">Login to add this resource to your favorites list!</Alert>
+                                }
+
+
                             </Grid>
                             <Grid item xs={3} align="center">
                                 <ButtonGroup
@@ -201,4 +277,37 @@ const Details = () => {
     );
 };
 
-export default Details;
+const stateToPropsMapper = (state) => {
+
+    return {
+        userprofile: state.userProfileReducer.userProfile
+    }
+};
+
+const dispatchToPropsMapper = (dispatch) => {
+    return {
+        findUserProfile: () => {
+            userService.profile()
+                .then(userProfile => {
+                    dispatch({
+                        type: "FIND_USER_PROFILE",
+                        userProfile
+                    });
+                });
+        },
+        updateUserProfile: (user) => {
+            userService.updateUserProfile(user)
+                .then(userProfile => {
+                    dispatch({
+                        type: "UPDATE_USER_PROFILE",
+                        userProfile
+                    });
+                });
+        },
+
+    }
+};
+
+export default connect(stateToPropsMapper, dispatchToPropsMapper)(Details);
+
+//export default Details;

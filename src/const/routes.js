@@ -13,3 +13,4 @@ export const DISCUSSIONS_ROUTE = "/discussions";
 export const PLAYLISTS_ROUTE = "/playlists";
 export const PLAYLISTS_BY_UID_ROUTE = "/playlists/:uid";
 export const ADMIN_ROUTE = "/admin";
+export const COMMUNITY_ROUTE = "/community";

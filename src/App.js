@@ -17,8 +17,13 @@ import Details from "./components/Screens/Details";
 import Login from "./components/Users/Login";
 import Register from "./components/Users/Register";
 import Profile from "./components/Users/Profile";
+import Playlists from "./components/Screens/Playlists";
 import Admin from "./components/Screens/Admin";
+import UserProfile from "./components/UserProfiles/UserProfile";
+import Community from "./components/Screens/Community";
 import resourceReducer from "./reducers/resource-reducer";
+import userReducer from "./reducers/user-reducer";
+import userProfileReducer from "./reducers/user-profile-reducer";
 import {
     ROOT_ROUTE,
     HOME_ROUTE,
@@ -30,11 +35,16 @@ import {
     LOGIN_ROUTE,
     REGISTER_ROUTE,
     PROFILE_ROUTE,
-    ADMIN_ROUTE
+    ADMIN_ROUTE,
+    COMMUNITY_ROUTE,
+    PROFILE_BY_UID_ROUTE,
+    PLAYLISTS_ROUTE,
 } from './const/routes';
 
 const reducer = combineReducers({
-    resourceReducer
+    resourceReducer,
+    userReducer,
+    userProfileReducer,
 });
 
 const store = createStore(reducer);
@@ -71,9 +81,12 @@ const App = () => {
                         <Route exact path={DISCUSSIONS_ROUTE} component={Discussions} />
                         <Route exact path={[SEARCH_BY_TITLE, SEARCH_ROUTE]} component={Search} />
                         <Route exact path={DETAILS_BY_DID_ROUTE} component={Details} />
+                        <Route exact path={PLAYLISTS_ROUTE} component={Playlists} />
                         <Route exact path={LOGIN_ROUTE} component={Login} />
                         <Route exact path={REGISTER_ROUTE} component={Register} />
                         <Route exact path={PROFILE_ROUTE} component={Profile} />
+                        <Route exact path={PROFILE_BY_UID_ROUTE} component={UserProfile} />
+                        <Route exact path={COMMUNITY_ROUTE} component={Community} />
                         <Route exact path={ADMIN_ROUTE} component={Admin} />
                     </Switch>
                 </Box>

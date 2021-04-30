@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const BookList = ({book, lastItem}) => {
+const BookListItem = ({book, lastItem}) => {
 
     const MAXIMUM_DESCRIPTION_LENGTH = 500;
     const classes = useStyles();
@@ -125,7 +125,7 @@ const BookList = ({book, lastItem}) => {
                                 avatar={<Avatar>T</Avatar>}
                                 label="React"
                                 color="primary"
-                                variant="contained"
+                                variant="outlined"
                                 clickable
                                 size="small"
                             />
@@ -155,4 +155,4 @@ const BookList = ({book, lastItem}) => {
     );
 };
 
-export default BookList;
+export default BookListItem;
